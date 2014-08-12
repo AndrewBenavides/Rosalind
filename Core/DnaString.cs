@@ -20,5 +20,9 @@ namespace Rosalind.Core {
         public string GetNucleotideCounts() {
             return string.Join(" ", GetNucleotideCounts(this.Sequence));
         }
+
+        public string TranscribeToRna() {
+            return this.Sequence.Replace('T', 'U');
+        }
     }
 }
