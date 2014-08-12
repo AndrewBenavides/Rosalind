@@ -38,5 +38,13 @@ namespace Rosalind.Core {
                 })
                 .ToArray());
         }
+
+        public string GetReverseComplement() {
+            var sequence = this.Sequence
+                .Select(n => n.Complement.Symbol)
+                .Reverse()
+                .ToArray();
+            return new string(sequence);
+        }
     }
 }
