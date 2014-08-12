@@ -29,10 +29,7 @@ namespace Rosalind.Core {
 
         private static List<Nucleotide> TranscribeToRna(IEnumerable<Nucleotide> sequence) {
             return sequence
-                .Select(n => {
-                    if (n == Nucleotide.Thymine) return Nucleotide.Uracil;
-                    return n;
-                })
+                .Select(n => n == Nucleotide.Thymine ? Nucleotide.Uracil : n)
                 .ToList();
         }
 
