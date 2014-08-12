@@ -15,36 +15,35 @@ namespace Rosalind.Core {
                 .ToList();
         }
 
-        private static List<int> GetNucleotideCounts(string sequence) {
+        private static List<int> GetNucleotideCounts(IEnumerable<Nucleotide> sequence) {
             return sequence
-                .OrderBy(n => n)
-                .GroupBy<char, char>(n => n)
+                .GroupBy(s => s.Symbol)
+                .OrderBy(g => g.Key)
                 .Select(g => g.Count())
                 .ToList();
         }
 
         public string GetNucleotideCounts() {
-            var sequence = new string(this.Sequence
-                .Select(n => n.Symbol)
-                .ToArray());
-            return string.Join(" ", GetNucleotideCounts(sequence));
+            return string.Join(" ", GetNucleotideCounts(this.Sequence));
+        }
+
+        private static List<Nucleotide> TranscribeToRna(IEnumerable<Nucleotide> sequence) {
+            return sequence
+                .Select(n => {
+                    if (n == Nucleotide.Thymine) return Nucleotide.Uracil;
+                    return n;
+                })
+                .ToList();
         }
 
         public string TranscribeToRna() {
-            return new string(this.Sequence
-                .Select(n => {
-                    if (n == Nucleotide.Thymine) return Nucleotide.Uracil.Symbol;
-                    return n.Symbol;
-                })
-                .ToArray());
+            return string.Join("", TranscribeToRna(this.Sequence).Select(n => n.Symbol));
         }
 
         public string GetReverseComplement() {
-            var sequence = this.Sequence
+            return string.Join("", this.Sequence
                 .Select(n => n.Complement.Symbol)
-                .Reverse()
-                .ToArray();
-            return new string(sequence);
+                .Reverse());
         }
     }
 }
