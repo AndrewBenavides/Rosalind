@@ -21,6 +21,19 @@ namespace Rosalind.Core {
         private Sequence(IEnumerable<Nucleotide> nucleotides)
             : base(nucleotides) { }
 
+        public static int CalculateHammingDistance(Sequence a, Sequence b) {
+            if (a.Count != b.Count) throw new NotSupportedException("Sequences must be of equal length.");
+            int distance = 0;
+            for (int i = 0; i < a.Count; i++) {
+                if (a[i] != b[i]) distance++;
+            }
+            return distance;
+        }
+
+        public int CalculateHammingDistance(Sequence other) {
+            return Sequence.CalculateHammingDistance(this, other);
+        }
+
         public static Sequence Create(IEnumerable<Nucleotide> sequence) {
             return new Sequence(sequence);
         }
