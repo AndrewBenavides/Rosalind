@@ -42,8 +42,12 @@
     <Compile Include="Database.cs" />
     <Compile Include="DnaString.cs" />
     <Compile Include="Fibonacci.cs" />
+    <Compile Include="GeneticString.cs" />
     <Compile Include="Nucleotide.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RnaString.cs" />
+    <Compile Include="Sequence.cs" />
+    <Compile Include="StringExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

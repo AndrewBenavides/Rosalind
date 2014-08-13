@@ -13,8 +13,8 @@ namespace Rosalind.Core {
                 .Select(s => {
                     var lines = s.Split(new char[] { '\r', '\n' }, remove);
                     var label = lines.First();
-                    var sequence = string.Join("", lines.Skip(1));
-                    return new DnaString(label, sequence);
+                    var sequence = Sequence.Parse(lines.Skip(1).Concatenate());
+                    return DnaString.Create(label, sequence);
                 });
             return new Database(sequences
                 .ToDictionary(s => s.Label, s => s));

@@ -2,61 +2,37 @@
 using System.Linq;
 
 namespace Rosalind.Core {
-    public class DnaString {
-        public string Label { get; private set; }
-        public List<Nucleotide> Sequence { get; private set; }
-        
-        public DnaString(string sequenceString) {
-            this.Sequence = GetSequence(sequenceString);
+    public class DnaString : GeneticString {
+        public DnaString(Sequence sequence)
+            : base(sequence) { }
+
+        public DnaString(string label, Sequence sequence)
+            : base(label, sequence) { }
+
+        public static DnaString Create(Sequence sequence) {
+            return new DnaString(sequence);
         }
 
-        public DnaString(string label, string sequenceString)
-            : this(sequenceString) {
-                this.Label = label;
+        public static DnaString Create(string label, Sequence sequence) {
+            return new DnaString(label, sequence);
         }
 
-        private static List<Nucleotide> GetSequence(string sequence) {
-            return sequence
-                .Select(c => Nucleotide.Nucleotides[c])
-                .ToList();
+        public static DnaString Parse(string sequenceString) {
+            var sequence = Sequence.Parse(sequenceString);
+            return new DnaString(sequence);
         }
 
-        private static List<int> GetNucleotideCounts(IEnumerable<Nucleotide> sequence) {
-            return sequence
-                .GroupBy(s => s.Symbol)
-                .OrderBy(g => g.Key)
-                .Select(g => g.Count())
-                .ToList();
+        public RnaString ToRnaString() {
+            var sequence = Sequence.Create(this.Sequence
+                .Select(n => n == Nucleotide.Thymine ? Nucleotide.Uracil : n));
+            return new RnaString(sequence);
         }
 
-        public string GetNucleotideCounts() {
-            return string.Join(" ", GetNucleotideCounts(this.Sequence));
-        }
-
-        private static List<Nucleotide> TranscribeToRna(IEnumerable<Nucleotide> sequence) {
-            return sequence
-                .Select(n => n == Nucleotide.Thymine ? Nucleotide.Uracil : n)
-                .ToList();
-        }
-
-        public string TranscribeToRna() {
-            return string.Join("", TranscribeToRna(this.Sequence).Select(n => n.Symbol));
-        }
-
-        public string GetReverseComplement() {
-            return string.Join("", this.Sequence
-                .Select(n => n.Complement.Symbol)
-                .Reverse());
-        }
-
-        public double GetGcContent() {
-            var matchingNucleotides = this.Sequence
-                .Count(n => n == Nucleotide.Cytosine || n == Nucleotide.Guanine);
-            return ((double)matchingNucleotides / this.Sequence.Count) * 100;
-        }
-
-        public override string ToString() {
-            return string.Join("", this.Sequence.Select(n => n.Symbol));
+        protected override void VerifySequence() {
+            if (this.Sequence.Any(n => n == Nucleotide.Uracil)) {
+                var message = "DnaStrings do not utilize the Uracil Nucleotide, check the input string for compliance.";
+                throw new System.InvalidOperationException(message);
+            }
         }
     }
 }

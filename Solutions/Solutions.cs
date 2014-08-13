@@ -32,8 +32,8 @@ namespace Rosalind.Solutions {
         }
 
         private void DNA_Solve(string input, string answer) {
-            var dnaString = new DnaString(input);
-            var result = dnaString.GetNucleotideCounts();
+            var dnaString = DnaString.Parse(input);
+            var result = dnaString.Sequence.PrintNucleotideCountsSummary();
             Assert.Equal(answer, result);
         }
         
@@ -44,8 +44,8 @@ namespace Rosalind.Solutions {
         }
 
         private void RNA_Solve(string input, string answer) {
-            var dnaString = new DnaString(input);
-            var result = dnaString.TranscribeToRna();
+            var dnaString = DnaString.Parse(input);
+            var result = dnaString.ToRnaString().Sequence.ToString();
             Assert.Equal(answer, result);
         }
 
@@ -56,8 +56,8 @@ namespace Rosalind.Solutions {
         }
 
         private void REVC_Solve(string input, string answer) {
-            var dnaString = new DnaString(input);
-            var result = dnaString.GetReverseComplement();
+            var dnaString = DnaString.Parse(input);
+            var result = dnaString.Sequence.ReverseComplement.ToString();
             Assert.Equal(answer, result);
         }
 
@@ -183,8 +183,10 @@ GAGTGTGTGTT",
 
         private void GC_Solve(string databaseString, string answer) {
             var database = Database.Parse(databaseString);
-            var gc = database.Values.OrderByDescending(n => n.GetGcContent()).First();
-            var result = string.Format("{0}\r\n{1:N6}", gc.Label, gc.GetGcContent());
+            var highest = database.Values
+                .OrderByDescending(n => n.Sequence.GcContent)
+                .First();
+            var result = string.Format("{0}\r\n{1:N6}", highest.Label, highest.Sequence.GcContent);
             Assert.Equal(answer, result);
         }
     }
