@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database.cs" />
     <Compile Include="DnaString.cs" />
     <Compile Include="Fibonacci.cs" />
     <Compile Include="Nucleotide.cs" />
