@@ -1,8 +1,9 @@
-﻿using Rosalind.Core.Math;
+﻿using System.Numerics;
+using Rosalind.Core.Math;
 using Xunit;
 
 namespace Rosalind.Solutions.Math {
-    class FibonacciTests {
+    public class FibonacciTests {
         [Fact]
         public void Simple() {
             TestSimple(0, 0);
@@ -38,6 +39,16 @@ namespace Rosalind.Solutions.Math {
 
         private void TestMultiplicative(int n, int k, int start, long expected) {
             Assert.Equal(expected, Fibonacci.Solve(n, k, start));
+        }
+
+        [Fact]
+        public void Large() {
+            TestLarge(100, "354224848179261915075");
+            TestLarge(200, "280571172992510140037611932413038677189525");
+        }
+
+        private void TestLarge(int n, string expected) {
+            Assert.Equal(BigInteger.Parse(expected), Fibonacci.Solve(n));
         }
     }
 }

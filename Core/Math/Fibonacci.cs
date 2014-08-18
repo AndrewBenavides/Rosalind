@@ -1,29 +1,30 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace Rosalind.Core.Math {
     public class Fibonacci {
-        private Dictionary<int, long> results = new Dictionary<int, long>();
+        private Dictionary<int, BigInteger> results = new Dictionary<int, BigInteger>();
 
         private Fibonacci() { }
 
-        public static long Solve(int n) {
+        public static BigInteger Solve(int n) {
             return Solve(n, 1, 1);
         }
 
-        public static long Solve(int n, int k) {
+        public static BigInteger Solve(int n, int k) {
             return Solve(n, k, 1);
         }
         
-        public static long Solve(int n, int k, int start) {
+        public static BigInteger Solve(int n, int k, int start) {
             var fib = new Fibonacci();
             var result = fib.SolveWithCache(n, k, start);
             fib = null;
             return result;
         }
 
-        private long SolveWithCache(int n, int k, int start) {
+        private BigInteger SolveWithCache(int n, int k, int start) {
             if (!this.results.ContainsKey(n)){
-                long result;
+                BigInteger result;
                 if (n == 0) {
                     result = 0;
                 } else if (n <= 2) {
