@@ -42,7 +42,7 @@
   <ItemGroup>
     <Compile Include="Database.cs" />
     <Compile Include="DnaString.cs" />
-    <Compile Include="Fibonacci.cs" />
+    <Compile Include="Math\Fibonacci.cs" />
     <Compile Include="GeneticString.cs" />
     <Compile Include="Math\Combinations.cs" />
     <Compile Include="Math\Factorial.cs" />

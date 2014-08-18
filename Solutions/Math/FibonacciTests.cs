@@ -1,10 +1,10 @@
-﻿using Rosalind.Core;
+﻿using Rosalind.Core.Math;
 using Xunit;
 
-namespace Rosalind.Solutions {
-    public class FibonacciTests {
+namespace Rosalind.Solutions.Math {
+    class FibonacciTests {
         [Fact]
-        public void ValidateSimple() {
+        public void Simple() {
             TestSimple(0, 0);
             TestSimple(1, 1);
             TestSimple(2, 1);
@@ -21,7 +21,7 @@ namespace Rosalind.Solutions {
         }
 
         [Fact]
-        public void ValidateMultiplicative() {
+        public void Multiplicative() {
             TestMultiplicative(0, 1, 1, 0);
             TestMultiplicative(1, 1, 1, 1);
             TestMultiplicative(2, 1, 1, 1);

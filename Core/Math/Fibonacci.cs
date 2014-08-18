@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Rosalind.Core {
+namespace Rosalind.Core.Math {
     public class Fibonacci {
         private Dictionary<int, long> results = new Dictionary<int, long>();
 
