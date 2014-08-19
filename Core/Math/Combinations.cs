@@ -12,6 +12,17 @@ namespace Rosalind.Core.Math {
             }
         }
 
+        public static IList<IList<T>> ListFor<T>(IEnumerable<T> set, int size) {
+            var list = set as IList<T>;
+            if (list != null) {
+                return SolveList(list, size);
+            } else {
+                return Solve(set, size)
+                    .Select(c => (IList<T>)c.ToList())
+                    .ToList();
+            }
+        }
+
         private static IEnumerable<IEnumerable<T>> Solve<T>(IEnumerable<T> set, int size) {
             int index = 0;
             foreach (var item in set) {

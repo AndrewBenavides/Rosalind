@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
+﻿using System.Linq;
 using Rosalind.Core;
+using Rosalind.Core.Math;
+using Xunit;
 
 namespace Rosalind.Solutions {
     public class Solutions {
@@ -21,7 +18,7 @@ namespace Rosalind.Solutions {
                 fst = b;
                 snd = a;
             }
-            var error = (Math.Abs(fst - snd) / fst);
+            var error = (System.Math.Abs(fst - snd) / fst);
             return error <= maxRelativeError;
         }
         
@@ -201,6 +198,19 @@ GAGTGTGTGTT",
             var dnaStringB = DnaString.Parse(b);
             var distance = dnaStringA.Sequence.CalculateHammingDistance(dnaStringB.Sequence);
             Assert.Equal(answer, distance);
+        }
+
+        [Fact]
+        public void IPRB() {
+            IPRB_Solve("2 2 2", "0.78333");
+            IPRB_Solve("21 15 19", "0.77121");
+        }
+
+        private void IPRB_Solve(string input, string answer) {
+            var factors = Factor.GeneratePopulation(input);
+            var probability = 1 - Probability.ForSet(factors, f => f.Zygosity == Zygosity.HomozygousRecessive);
+            var result = string.Format("{0:N5}", probability);
+            Assert.Equal(answer, result);
         }
     }
 }
