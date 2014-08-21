@@ -43,7 +43,8 @@
     <Compile Include="Allele.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DnaString.cs" />
-    <Compile Include="Math\Probability.cs" />
+    <Compile Include="FactorGenerator.cs" />
+    <Compile Include="FactorProbability.cs" />
     <Compile Include="Math\Fibonacci.cs" />
     <Compile Include="Factor.cs" />
     <Compile Include="GeneticString.cs" />

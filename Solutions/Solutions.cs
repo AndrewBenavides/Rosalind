@@ -207,8 +207,18 @@ GAGTGTGTGTT",
         }
 
         private void IPRB_Solve(string input, string answer) {
-            var factors = Factor.GeneratePopulation(input);
-            var probability = 1 - Probability.ForSet(factors, f => f.Zygosity == Zygosity.HomozygousRecessive);
+            var factors = FactorGenerator.Population(input);
+            var probability = FactorProbability.GetByEnumeration(factors, 
+                f => f.Zygosity == Zygosity.HomozygousDominant || f.Zygosity == Zygosity.Heterozygous);
+            var result = string.Format("{0:N5}", probability);
+            Assert.Equal(answer, result);
+            IPRB_Solve2(input, answer);
+        }
+
+        private void IPRB_Solve2(string input, string answer) {
+            var factors = FactorGenerator.Population(input);
+            var p = FactorProbability.Calculate(factors);
+            var probability = p[Zygosity.HomozygousDominant] + p[Zygosity.Heterozygous];
             var result = string.Format("{0:N5}", probability);
             Assert.Equal(answer, result);
         }
