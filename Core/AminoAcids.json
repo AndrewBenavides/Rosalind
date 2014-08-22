@@ -1,0 +1,128 @@
+﻿[
+    {
+        "symbol": "A",
+        "abbreviation": "Ala",
+        "name": "Alanine",
+        "codons": [ "GCU", "GCC", "GCA", "GCG" ]
+    },
+    {
+        "symbol": "R",
+        "abbreviation": "Arg",
+        "name": "Arginine",
+        "codons": [ "CGU", "CGC", "CGA", "CGG", "AGA", "AGG" ]
+    },
+    {
+        "symbol": "N",
+        "abbreviation": "Asn",
+        "name": "Asparagine",
+        "codons": [ "AAU", "AAC" ]
+    },
+    {
+        "symbol": "D",
+        "abbreviation": "Asp",
+        "name": "Aspartic acid",
+        "codons": [ "GAU", "GAC" ]
+    },
+    {
+        "symbol": "C",
+        "abbreviation": "Cys",
+        "name": "Cysteine",
+        "codons": [ "UGU", "UGC" ]
+    },
+    {
+        "symbol": "Q",
+        "abbreviation": "Gln",
+        "name": "Glutamine",
+        "codons": [ "CAA", "CAG" ]
+    },
+    {
+        "symbol": "E",
+        "abbreviation": "Glu",
+        "name": "Glutamic acid",
+        "codons": [ "GAA", "GAG" ]
+    },
+    {
+        "symbol": "G",
+        "abbreviation": "Gly",
+        "name": "Glycine",
+        "codons": [ "GGU", "GGC", "GGA", "GGG" ]
+    },
+    {
+        "symbol": "H",
+        "abbreviation": "His",
+        "name": "Histidine",
+        "codons": [ "CAU", "CAC" ]
+    },
+    {
+        "symbol": "I",
+        "abbreviation": "Ile",
+        "name": "Isoleucine",
+        "codons": [ "AUU", "AUC", "AUA" ]
+    },
+    {
+        "symbol": "L",
+        "abbreviation": "Leu",
+        "name": "Leucine",
+        "codons": [ "UUA", "UUG", "CUU", "CUC", "CUA", "CUG" ]
+    },
+    {
+        "symbol": "K",
+        "abbreviation": "Lys",
+        "name": "Lysine",
+        "codons": [ "AAA", "AAG" ]
+    },
+    {
+        "symbol": "M",
+        "abbreviation": "Met",
+        "name": "Methionine",
+        "codons": [ "AUG" ]
+    },
+    {
+        "symbol": "F",
+        "abbreviation": "Phe",
+        "name": "Phenylalanine",
+        "codons": [ "UUU", "UUC" ]
+    },
+    {
+        "symbol": "P",
+        "abbreviation": "Pro",
+        "name": "Proline",
+        "codons": [ "CCU", "CCC", "CCA", "CCG" ]
+    },
+    {
+        "symbol": "S",
+        "abbreviation": "Ser",
+        "name": "Serine",
+        "codons": [ "UCU", "UCC", "UCA", "UCG", "AGU", "AGC" ]
+    },
+    {
+        "symbol": "T",
+        "abbreviation": "Thr",
+        "name": "Threonine",
+        "codons": [ "ACU", "ACC", "ACA", "ACG" ]
+    },
+    {
+        "symbol": "W",
+        "abbreviation": "Trp",
+        "name": "Tryptophan",
+        "codons": [ "UGG" ]
+    },
+    {
+        "symbol": "Y",
+        "abbreviation": "Tyr",
+        "name": "Tyrosine",
+        "codons": [ "UAU", "UAC" ]
+    },
+    {
+        "symbol": "V",
+        "abbreviation": "Val",
+        "name": "Valine",
+        "codons": [ "GUU", "GUC", "GUA", "GUG" ]
+    },
+    {
+        "symbol": " ",
+        "abbreviation": "Stop",
+        "name": "Stop",
+        "codons": [ "UAA", "UGA", "UAG" ]
+    }
+]

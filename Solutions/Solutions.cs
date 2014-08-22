@@ -131,5 +131,17 @@ namespace Rosalind.Solutions {
             var result = string.Format("{0:N5}", probability);
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void PROT() {
+            DataService.SolveUsing(PROT_Solve);
+        }
+
+        private void PROT_Solve(DataEntry entry) {
+            var protein = ProteinString.Parse(entry.ReadDataset());
+            var encoded = protein.ToEncodedString();
+            var expected = entry.ReadOrWriteOutput(encoded);
+            Assert.Equal(expected, encoded);
+        }
     }
 }
