@@ -38,6 +38,23 @@ namespace Rosalind.Core {
             return new Sequence(sequence);
         }
 
+        public static List<int> FindMotif(Sequence source, Sequence search) {
+            var locations = new List<int>();
+            var start = search.Count - 1;
+            var frame = new LinkedList<Nucleotide>(source.Take(start));
+            for (int i = start; i < source.Count; i++) {
+                frame.AddLast(source[i]);
+                if (search.SequenceEqual(frame)) locations.Add((i - start) + 1); //One-based index.
+                frame.RemoveFirst();
+            }
+            return locations;
+        }
+
+        public string FindMotif(Sequence search) {
+            var locations = Sequence.FindMotif(this, search);
+            return string.Join(" ", locations);
+        }
+
         public static double GetGcContent(Sequence sequence) {
             var count = sequence
                 .Count(n => n == Nucleotide.Cytosine || n == Nucleotide.Guanine);

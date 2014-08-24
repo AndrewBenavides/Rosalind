@@ -143,5 +143,20 @@ namespace Rosalind.Solutions {
             var expected = entry.ReadOrWriteOutput(encoded);
             Assert.Equal(expected, encoded);
         }
+
+        [Fact]
+        public void SUBS() {
+            DataService.SolveUsing(SUBS_Solve);
+        }
+
+        public void SUBS_Solve(DataEntry entry) {
+            var input = entry.ReadDataset().ToLines();
+            var source = Sequence.Parse(input[0]);
+            var search = Sequence.Parse(input[1]);
+            var result = source.FindMotif(search);
+            var expected = entry.ReadOrWriteOutput(result);
+            Assert.Equal(expected, result);
+        }
+
     }
 }
