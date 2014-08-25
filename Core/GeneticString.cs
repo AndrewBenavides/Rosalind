@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Rosalind.Core {
-    public abstract class GeneticString {
+﻿namespace Rosalind.Core {
+    public abstract class GeneticString : IGeneticString {
         public string Label { get; protected set; }
         public Sequence Sequence { get; protected set; }
 

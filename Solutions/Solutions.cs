@@ -158,5 +158,17 @@ namespace Rosalind.Solutions {
             Assert.Equal(expected, result);
         }
 
+        [Fact]
+        public void CONS() {
+            DataService.SolveUsing(CONS_Solve);
+        }
+
+        public void CONS_Solve(DataEntry entry) {
+            var database = Database.Parse(entry.ReadDataset());
+            var consenus = database.GetConsensus();
+            var result = consenus.PrintConsensus();
+            var expected = entry.ReadOrWriteOutput(result);
+            Assert.Equal(expected, result);
+        }
     }
 }

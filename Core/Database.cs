@@ -19,5 +19,9 @@ namespace Rosalind.Core {
             return new Database(sequences
                 .ToDictionary(s => s.Label, s => s));
         }
+
+        public DatabaseConsensus GetConsensus() {
+            return DatabaseConsensus.For(this);
+        }
     }
 }
