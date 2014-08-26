@@ -65,7 +65,7 @@ namespace Rosalind.Core {
             return sequence
                 .GroupBy(n => n.Symbol)
                 .OrderBy(g => g.Key)
-                .ToDictionary(g => Nucleotide.Nucleotides[g.Key], g => g.Count());
+                .ToDictionary(g => Nucleotide.Registry[g.Key], g => g.Count());
         }
 
         public static Sequence GetReverseComplement(Sequence sequence) {
@@ -76,7 +76,7 @@ namespace Rosalind.Core {
         
         public static Sequence Parse(string sequence) {
             return new Sequence(sequence
-                .Select(c => Nucleotide.Nucleotides[c]));
+                .Select(c => Nucleotide.Registry[c]));
         }
 
         public string PrintNucleotideCountsSummary() {

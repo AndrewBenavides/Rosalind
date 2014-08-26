@@ -5,13 +5,13 @@ namespace Rosalind.Solutions {
     public class NucleotideTests {
         [Fact]
         public void DictionaryContainsValues() {
-            Assert.NotEmpty(Nucleotide.Nucleotides);
-            Assert.Contains<Nucleotide>(Nucleotide.Adenine, Nucleotide.Nucleotides.Values);
-            Assert.Contains<Nucleotide>(Nucleotide.Cytosine, Nucleotide.Nucleotides.Values);
-            Assert.Contains<Nucleotide>(Nucleotide.Guanine, Nucleotide.Nucleotides.Values);
-            Assert.Contains<Nucleotide>(Nucleotide.Thymine, Nucleotide.Nucleotides.Values);
-            Assert.Contains<Nucleotide>(Nucleotide.Uracil, Nucleotide.Nucleotides.Values);
-            Assert.Equal(5, Nucleotide.Nucleotides.Count);
+            Assert.NotEmpty(Nucleotide.Registry);
+            Assert.Contains<Nucleotide>(Nucleotide.Adenine, Nucleotide.Registry.Values);
+            Assert.Contains<Nucleotide>(Nucleotide.Cytosine, Nucleotide.Registry.Values);
+            Assert.Contains<Nucleotide>(Nucleotide.Guanine, Nucleotide.Registry.Values);
+            Assert.Contains<Nucleotide>(Nucleotide.Thymine, Nucleotide.Registry.Values);
+            Assert.Contains<Nucleotide>(Nucleotide.Uracil, Nucleotide.Registry.Values);
+            Assert.Equal(16, Nucleotide.Registry.Count);
         }
 
         [Fact]

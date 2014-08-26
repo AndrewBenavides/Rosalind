@@ -60,7 +60,8 @@
     <Compile Include="Math\Combinations.cs" />
     <Compile Include="Math\Factorial.cs" />
     <Compile Include="Nucleotide.cs" />
-    <Compile Include="NucleotideFrequencyProfile.cs" />
+    <Compile Include="NucleotideBasesEncodingComparer.cs" />
+    <Compile Include="NucleotideFrequencyMatrix.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProteinString.cs" />
     <Compile Include="PunnettSquare.cs" />
