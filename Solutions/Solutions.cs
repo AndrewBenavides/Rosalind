@@ -170,5 +170,20 @@ namespace Rosalind.Solutions {
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void FIBD() {
+            DataService.SolveUsing(FIBD_Solve);
+        }
+
+        public void FIBD_Solve(DataEntry entry) {
+            var input = entry.ReadDataset()
+                .Split(' ')
+                .Select(i => int.Parse(i))
+                .ToList();
+            var result = Fibonacci.SolveDecay(input[0], input[1]).ToString();
+            var expected = entry.ReadOrWriteOutput(result);
+            Assert.Equal(expected, result);
+        }
     }
 }

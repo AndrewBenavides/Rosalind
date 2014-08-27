@@ -50,5 +50,26 @@ namespace Rosalind.Solutions.Math {
         private void TestLarge(int n, string expected) {
             Assert.Equal(BigInteger.Parse(expected), Fibonacci.Solve(n));
         }
+
+        [Fact]
+        public void Decay() {
+            TestDecay(5, 3, "3");
+            TestDecay(5, 4, "4");
+            TestDecay(5, 5, "5");
+            TestDecay(6, 3, "4");
+            TestDecay(6, 4, "6");
+            TestDecay(6, 5, "7");
+            TestDecay(7, 3, "5");
+            TestDecay(7, 4, "9");
+            TestDecay(7, 5, "11");
+            TestDecay(10, 3, "12");
+            TestDecay(10, 4, "28");
+            TestDecay(10, 5, "40");
+            TestDecay(11, 3, "16");
+        }
+
+        private void TestDecay(int n, int m, string expected) {
+            Assert.Equal(BigInteger.Parse(expected), Fibonacci.SolveDecay(n, m));
+        }
     }
 }
