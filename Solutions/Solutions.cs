@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Rosalind.Core;
+using Rosalind.Core.Graphing;
 using Rosalind.Core.Math;
 using Xunit;
 
@@ -149,7 +150,7 @@ namespace Rosalind.Solutions {
             DataService.SolveUsing(SUBS_Solve);
         }
 
-        public void SUBS_Solve(DataEntry entry) {
+        private void SUBS_Solve(DataEntry entry) {
             var input = entry.ReadDataset().ToLines();
             var source = Sequence.Parse(input[0]);
             var search = Sequence.Parse(input[1]);
@@ -163,7 +164,7 @@ namespace Rosalind.Solutions {
             DataService.SolveUsing(CONS_Solve);
         }
 
-        public void CONS_Solve(DataEntry entry) {
+        private void CONS_Solve(DataEntry entry) {
             var database = Database.Parse(entry.ReadDataset());
             var consenus = database.GetConsensus();
             var result = consenus.PrintConsensus();
@@ -176,12 +177,25 @@ namespace Rosalind.Solutions {
             DataService.SolveUsing(FIBD_Solve);
         }
 
-        public void FIBD_Solve(DataEntry entry) {
+        private void FIBD_Solve(DataEntry entry) {
             var input = entry.ReadDataset()
                 .Split(' ')
                 .Select(i => int.Parse(i))
                 .ToList();
             var result = Fibonacci.SolveDecay(input[0], input[1]).ToString();
+            var expected = entry.ReadOrWriteOutput(result);
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void GRPH() {
+            DataService.SolveUsing(GRPH_Solve);
+        }
+
+        private void GRPH_Solve(DataEntry entry) {
+            var database = Database.Parse(entry.ReadDataset());
+            var graph = OverlapGraph.For(database, 3);
+            var result = graph.ToString();
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
         }

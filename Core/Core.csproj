@@ -52,6 +52,7 @@
     <Compile Include="DnaString.cs" />
     <Compile Include="FactorGenerator.cs" />
     <Compile Include="FactorProbability.cs" />
+    <Compile Include="Graphing\Edge.cs" />
     <Compile Include="IGeneticString.cs" />
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="Math\Fibonacci.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Nucleotide.cs" />
     <Compile Include="NucleotideBasesEncodingComparer.cs" />
     <Compile Include="NucleotideFrequencyMatrix.cs" />
+    <Compile Include="Graphing\OverlapGraph.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProteinString.cs" />
     <Compile Include="PunnettSquare.cs" />
