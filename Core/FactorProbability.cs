@@ -40,15 +40,41 @@ namespace Rosalind.Core {
             return p;
         }
 
-        public static double CalculateExpectedOffspring(IList<int> genotypePairings, int offspring) {
-            var AAAA = genotypePairings[0] * ((4 / 4D) + (0 / 4D)) * offspring;
-            var AAAa = genotypePairings[1] * ((2 / 4D) + (2 / 4D)) * offspring;
-            var AAaa = genotypePairings[2] * ((0 / 4D) + (4 / 4D)) * offspring;
-            var AaAa = genotypePairings[3] * ((1 / 4D) + (2 / 4D)) * offspring;
-            var Aaaa = genotypePairings[4] * ((0 / 4D) + (2 / 4D)) * offspring;
-            var aaaa = genotypePairings[5] * ((0 / 4D) + (0 / 4D)) * offspring;
+        public static double CalculateExpectedOffspringWithDominantTrait(IList<int> genotypePairings, int offspring) {
+            var pairs = GetGenotypePairings(genotypePairings);
+            var AAAA = pairs["AAAA"] * ((4 / 4D) + (0 / 4D)) * offspring;
+            var AAAa = pairs["AAAa"] * ((2 / 4D) + (2 / 4D)) * offspring;
+            var AAaa = pairs["AAaa"] * ((0 / 4D) + (4 / 4D)) * offspring;
+            var AaAa = pairs["AaAa"] * ((1 / 4D) + (2 / 4D)) * offspring;
+            var Aaaa = pairs["Aaaa"] * ((0 / 4D) + (2 / 4D)) * offspring;
+            var aaaa = pairs["aaaa"] * ((0 / 4D) + (0 / 4D)) * offspring;
             var result = AAAA + AAAa + AAaa + AaAa + Aaaa + aaaa;
             return result;
+        }
+
+        public static Dictionary<Zygosity, double> CalculateExpectedOffsrping(IList<int> genotypePairings, int offspring) {
+            var pairs = GetGenotypePairings(genotypePairings);
+            var dominant = ((pairs["AAAA"] * 1.00) + (pairs["AAAa"] * 0.50) + (pairs["AaAa"] * 0.25)) * offspring;
+            var hetero = ((pairs["AAAa"] * 0.50) + (pairs["AAaa"] * 1.00) + (pairs["AaAa"] * 0.50) + (pairs["Aaaa"] * 0.50)) * offspring;
+            var recessive = ((pairs["AaAa"] * 0.25) + (pairs["Aaaa"] * 0.50) + (pairs["aaaa"] * 1.00)) * offspring;
+
+            var dict = new Dictionary<Zygosity, double>() {
+                { Zygosity.HomozygousDominant, dominant },
+                { Zygosity.Heterozygous, hetero },
+                { Zygosity.HomozygousRecessive, recessive }
+            };
+            return dict;
+        }
+
+        private static Dictionary<string, int> GetGenotypePairings(IList<int> genotypePairings) {
+            return new Dictionary<string, int>(){
+                { "AAAA", genotypePairings[0] },
+                { "AAAa", genotypePairings[1] },
+                { "AAaa", genotypePairings[2] },
+                { "AaAa", genotypePairings[3] },
+                { "Aaaa", genotypePairings[4] },
+                { "aaaa", genotypePairings[5] }
+            };
         }
     }
 }

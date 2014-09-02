@@ -196,13 +196,23 @@ namespace Rosalind.Solutions {
         [Fact]
         public void IEV() {
             DataService.SolveUsing(IEV_Solve);
+            DataService.SolveUsing(IEV_Solve2);
         }
 
         public void IEV_Solve(DataEntry entry) {
             var inputs = entry.ReadDataset().ToList<int>(' ');
-            var result = FactorProbability.CalculateExpectedOffspring(inputs, 2).ToString("F1");
+            var result = FactorProbability.CalculateExpectedOffspringWithDominantTrait(inputs, 2).ToString("F1");
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
+        }
+
+        public void IEV_Solve2(DataEntry entry) {
+            var inputs = entry.ReadDataset().ToList<int>(' ');
+            var offspring = FactorProbability.CalculateExpectedOffsrping(inputs, 2);
+            var result = (offspring[Zygosity.HomozygousDominant] + offspring[Zygosity.Heterozygous]).ToString("F1");
+            var expected = entry.ReadOrWriteOutput(result);
+            Assert.Equal(expected, result);
+
         }
     }
 }
