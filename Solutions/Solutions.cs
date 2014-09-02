@@ -65,11 +65,7 @@ namespace Rosalind.Solutions {
         }
 
         private void FIB_Solve(DataEntry entry) {
-            var input = entry.ReadDataset()
-                .Split(' ')
-                .Select(i => int.Parse(i))
-                .ToList();
-
+            var input = entry.ReadDataset().ToList<int>(' ');
             var n = input[0];
             var k = input[1];
             var result = Fibonacci.Solve(n, k, 1);
@@ -178,10 +174,7 @@ namespace Rosalind.Solutions {
         }
 
         private void FIBD_Solve(DataEntry entry) {
-            var input = entry.ReadDataset()
-                .Split(' ')
-                .Select(i => int.Parse(i))
-                .ToList();
+            var input = entry.ReadDataset().ToList<int>(' ');
             var result = Fibonacci.SolveDecay(input[0], input[1]).ToString();
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
@@ -206,11 +199,7 @@ namespace Rosalind.Solutions {
         }
 
         public void IEV_Solve(DataEntry entry) {
-            var inputs = entry.ReadDataset()
-                .Split(' ')
-                .Select(i => int.Parse(i))
-                .ToList();
-
+            var inputs = entry.ReadDataset().ToList<int>(' ');
             var result = FactorProbability.CalculateExpectedOffspring(inputs, 2).ToString("F1");
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
