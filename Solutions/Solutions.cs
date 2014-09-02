@@ -199,5 +199,21 @@ namespace Rosalind.Solutions {
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void IEV() {
+            DataService.SolveUsing(IEV_Solve);
+        }
+
+        public void IEV_Solve(DataEntry entry) {
+            var inputs = entry.ReadDataset()
+                .Split(' ')
+                .Select(i => int.Parse(i))
+                .ToList();
+
+            var result = FactorProbability.CalculateExpectedOffspring(inputs, 2).ToString("F1");
+            var expected = entry.ReadOrWriteOutput(result);
+            Assert.Equal(expected, result);
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace Rosalind.Core {
             };
             return dict;
         }
-        
+
         public static double GetByEnumeration(IEnumerable<Factor> set, Func<Factor, bool> predicate) {
             var punnettSquares = Combinations.ListFor(set, 2)
                 .Select(c => Factor.Cross(c[0], c[1]))
@@ -38,6 +38,17 @@ namespace Rosalind.Core {
                 .Count(predicate);
             var p = (double)matching / punnettSquares.Sum(s => s.Outcomes.Count);
             return p;
+        }
+
+        public static double CalculateExpectedOffspring(IList<int> genotypePairings, int offspring) {
+            var AAAA = genotypePairings[0] * ((4 / 4D) + (0 / 4D)) * offspring;
+            var AAAa = genotypePairings[1] * ((2 / 4D) + (2 / 4D)) * offspring;
+            var AAaa = genotypePairings[2] * ((0 / 4D) + (4 / 4D)) * offspring;
+            var AaAa = genotypePairings[3] * ((1 / 4D) + (2 / 4D)) * offspring;
+            var Aaaa = genotypePairings[4] * ((0 / 4D) + (2 / 4D)) * offspring;
+            var aaaa = genotypePairings[5] * ((0 / 4D) + (0 / 4D)) * offspring;
+            var result = AAAA + AAAa + AAaa + AaAa + Aaaa + aaaa;
+            return result;
         }
     }
 }
