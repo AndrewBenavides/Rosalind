@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Rosalind.Core;
 using Rosalind.Core.Graphing;
 using Rosalind.Core.Math;
@@ -213,6 +214,28 @@ namespace Rosalind.Solutions {
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
 
+        }
+
+        [Fact]
+        public void LCSM() {
+            var strings = new string[] {
+                "GATTACA",
+                "TAGACCA",
+                "ATACA"
+            };
+            var sets = new List<HashSet<string>>();
+            foreach (var s in strings) {
+                var set = new HashSet<string>();
+                for (int i = s.Length; i >= 2; i--) {
+                    for (int j = 0; j <= s.Length - i; j++) {
+                        var sub = s.Substring(j, i);
+                        if (!set.Contains(sub)) set.Add(sub);
+                    }
+                }
+                sets.Add(set);
+            }
+            foreach (var entry in sets.Skip(1)) sets[0].IntersectWith(entry);
+            var common = sets[0].ToList();
         }
     }
 }
