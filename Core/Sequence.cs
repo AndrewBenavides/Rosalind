@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Rosalind.Core {
-    public class Sequence : List<Nucleotide> {
+    public class Sequence : List<Nucleotide>, IEqualityComparer<Sequence> {
+        private int hashcode = 19;
+        
         public double GcContent {
             get { return Sequence.GetGcContent(this); }
         }
@@ -16,8 +18,17 @@ namespace Rosalind.Core {
             get { return Sequence.GetReverseComplement(this); }
         }
 
-        private Sequence(IEnumerable<Nucleotide> nucleotides)
-            : base(nucleotides) { }
+        private Sequence(IEnumerable<Nucleotide> nucleotides) {
+            this.Capacity = nucleotides.Count();
+            using (var e = nucleotides.GetEnumerator()) {
+                for (int i = 0; i < this.Capacity; i++) {
+                    e.MoveNext();
+                    var nucleotide = e.Current;
+                    this.hashcode = this.hashcode * 31 + nucleotide.ID;
+                    Insert(i, nucleotide);
+                }
+            }
+        }
 
         public static int CalculateHammingDistance(Sequence a, Sequence b) {
             if (a.Count != b.Count) throw new NotSupportedException("Sequences must be of equal length.");
@@ -36,6 +47,16 @@ namespace Rosalind.Core {
             return new Sequence(sequence);
         }
 
+        public override bool Equals(object obj) {
+            var other = obj as Sequence;
+            if (other != null) return this.SequenceEqual(other);
+            return false;
+        }
+
+        public bool Equals(Sequence x, Sequence y) {
+            return x.SequenceEqual(y);
+        }
+
         public static List<int> FindMotif(Sequence source, Sequence search) {
             return MotifFinder.FindMotifIndexes(source, search);
         }
@@ -49,6 +70,14 @@ namespace Rosalind.Core {
             var count = sequence
                 .Count(n => n == Nucleotide.Cytosine || n == Nucleotide.Guanine);
             return ((double)count / sequence.Count) * 100D;
+        }
+
+        public override int GetHashCode() {
+            return this.hashcode;
+        }
+
+        public int GetHashCode(Sequence obj) {
+            return obj.GetHashCode();
         }
 
         public static Dictionary<Nucleotide, int> GetNucleotideCounts(Sequence sequence) {

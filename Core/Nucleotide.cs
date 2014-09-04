@@ -7,22 +7,22 @@ using System.Reflection;
 namespace Rosalind.Core {
     public sealed class Nucleotide : IComparable<Nucleotide> {
         #region Type-safe enumeration values
-        public static readonly Nucleotide Adenine = Nucleotide.Create('A', "Adenine", 'T', new char[] { 'A' });
-        public static readonly Nucleotide Cytosine = Nucleotide.Create('C', "Cytosine", 'G', new char[] { 'C' });
-        public static readonly Nucleotide Guanine = Nucleotide.Create('G', "Gaunine", 'C', new char[] { 'G' });
-        public static readonly Nucleotide Thymine = Nucleotide.Create('T', "Thymine", 'A', new char[] { 'T' });
-        public static readonly Nucleotide Uracil = Nucleotide.Create('U', "Uracil", 'A', new char[] { 'U' });
-        public static readonly Nucleotide Weak = Nucleotide.Create('W', "Weak Interaction", 'S', new char[] { 'A', 'T', 'U' });
-        public static readonly Nucleotide Strong = Nucleotide.Create('S', "Strong Interaction", 'W', new char[] { 'C', 'G' });
-        public static readonly Nucleotide Amino = Nucleotide.Create('M', "Amino", 'K', new char[] { 'A', 'C' });
-        public static readonly Nucleotide Keto = Nucleotide.Create('K', "Ketones", 'M', new char[] { 'G', 'T', 'U' });
-        public static readonly Nucleotide Purine = Nucleotide.Create('R', "Purine", 'Y', new char[] { 'A', 'G' });
-        public static readonly Nucleotide Pyrimidine = Nucleotide.Create('Y', "Pyrimidine", 'R', new char[] { 'C', 'T', 'U' });
-        public static readonly Nucleotide NotA = Nucleotide.Create('B', "Not A", 'V', new char[] { 'C', 'G', 'T', 'U' });
-        public static readonly Nucleotide NotC = Nucleotide.Create('D', "Not C", 'H', new char[] { 'A', 'G', 'T', 'U' });
-        public static readonly Nucleotide NotG = Nucleotide.Create('H', "Not G", 'D', new char[] { 'A', 'C', 'T', 'U' });
-        public static readonly Nucleotide NotT = Nucleotide.Create('V', "Not T", 'B', new char[] { 'A', 'C', 'G' });
-        public static readonly Nucleotide Nucleic = Nucleotide.Create('N', "Nucleic Acid", 'N', new char[] { 'A', 'C', 'G', 'T', 'U' });
+        public static readonly Nucleotide Adenine = Nucleotide.Create(0, 'A', "Adenine", 'T', new char[] { 'A' });
+        public static readonly Nucleotide Cytosine = Nucleotide.Create(1, 'C', "Cytosine", 'G', new char[] { 'C' });
+        public static readonly Nucleotide Guanine = Nucleotide.Create(2, 'G', "Gaunine", 'C', new char[] { 'G' });
+        public static readonly Nucleotide Thymine = Nucleotide.Create(3, 'T', "Thymine", 'A', new char[] { 'T' });
+        public static readonly Nucleotide Uracil = Nucleotide.Create(4, 'U', "Uracil", 'A', new char[] { 'U' });
+        public static readonly Nucleotide Weak = Nucleotide.Create(5, 'W', "Weak Interaction", 'S', new char[] { 'A', 'T', 'U' });
+        public static readonly Nucleotide Strong = Nucleotide.Create(6, 'S', "Strong Interaction", 'W', new char[] { 'C', 'G' });
+        public static readonly Nucleotide Amino = Nucleotide.Create(7, 'M', "Amino", 'K', new char[] { 'A', 'C' });
+        public static readonly Nucleotide Keto = Nucleotide.Create(8, 'K', "Ketones", 'M', new char[] { 'G', 'T', 'U' });
+        public static readonly Nucleotide Purine = Nucleotide.Create(9, 'R', "Purine", 'Y', new char[] { 'A', 'G' });
+        public static readonly Nucleotide Pyrimidine = Nucleotide.Create(10, 'Y', "Pyrimidine", 'R', new char[] { 'C', 'T', 'U' });
+        public static readonly Nucleotide NotA = Nucleotide.Create(11, 'B', "Not A", 'V', new char[] { 'C', 'G', 'T', 'U' });
+        public static readonly Nucleotide NotC = Nucleotide.Create(12, 'D', "Not C", 'H', new char[] { 'A', 'G', 'T', 'U' });
+        public static readonly Nucleotide NotG = Nucleotide.Create(13, 'H', "Not G", 'D', new char[] { 'A', 'C', 'T', 'U' });
+        public static readonly Nucleotide NotT = Nucleotide.Create(14, 'V', "Not T", 'B', new char[] { 'A', 'C', 'G' });
+        public static readonly Nucleotide Nucleic = Nucleotide.Create(15, 'N', "Nucleic Acid", 'N', new char[] { 'A', 'C', 'G', 'T', 'U' });
         #endregion
 
         private static readonly ReadOnlyDictionary<char, Nucleotide> _registry;
@@ -60,28 +60,35 @@ namespace Rosalind.Core {
         
         private readonly IEnumerable<char> bases;
         private readonly char complement;
+        private readonly int id;
         private readonly string name;
         private readonly char symbol;
         
         public ReadOnlyCollection<Nucleotide> Bases { get; private set; }
         public Nucleotide Complement { get; private set; }
+        public int ID { get { return this.id; } }
         public string Name { get { return this.name; } }
         public char Symbol { get { return this.symbol; } }
 
-        private Nucleotide(char symbol, string name, char complement, IEnumerable<char> bases) {
+        private Nucleotide(int id, char symbol, string name, char complement, IEnumerable<char> bases) {
             this.complement = complement;
+            this.id = id;
             this.name = name;
             this.symbol = symbol;
             this.bases = bases;
         }
         
-        private static Nucleotide Create(char symbol, string name, char complement, IEnumerable<char> bases) {
-            return new Nucleotide(symbol, name, complement, bases);
+        private static Nucleotide Create(int id, char symbol, string name, char complement, IEnumerable<char> bases) {
+            return new Nucleotide(id, symbol, name, complement, bases);
         }
 
         public static Nucleotide EncodeBases(IEnumerable<Nucleotide> consensus) {
             var set = new SortedSet<Nucleotide>(consensus);
             return _encodingRegistry[set];
+        }
+
+        public override int GetHashCode() {
+            return this.id;
         }
         
         public override string ToString() {
