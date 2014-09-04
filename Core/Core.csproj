@@ -60,6 +60,7 @@
     <Compile Include="GeneticString.cs" />
     <Compile Include="Math\Combinations.cs" />
     <Compile Include="Math\Factorial.cs" />
+    <Compile Include="MotifFinder.cs" />
     <Compile Include="Nucleotide.cs" />
     <Compile Include="NucleotideBasesEncodingComparer.cs" />
     <Compile Include="NucleotideFrequencyMatrix.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="PunnettSquare.cs" />
     <Compile Include="RnaString.cs" />
     <Compile Include="Sequence.cs" />
+    <Compile Include="SequenceEqualityComparer.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Utilities\JsonLoader.cs" />
   </ItemGroup>

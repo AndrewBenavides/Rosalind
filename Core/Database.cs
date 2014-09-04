@@ -20,6 +20,11 @@ namespace Rosalind.Core {
                 .ToDictionary(s => s.Label, s => s));
         }
 
+        public List<Sequence> FindLongestCommonSubsequences() {
+            return MotifFinder.FindLongestCommonSubsequences(this.Values
+                .Select(s => s.Sequence));
+        }
+
         public DatabaseConsensus GetConsensus() {
             return DatabaseConsensus.For(this);
         }

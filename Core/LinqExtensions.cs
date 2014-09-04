@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Rosalind.Core {
     public static class LinqExtensions {
@@ -21,5 +23,24 @@ namespace Rosalind.Core {
         //        .Select((e, i) => new { Index = i / 3, Element = e })
         //        .GroupBy(o => o.Index, o => o.Element);
         //}
+
+        public static IEnumerable<T> WhereMax<T>(this IEnumerable<T> source)
+            where T : IEnumerable<object> {
+                return source.WhereMax(x => x.Count());
+        }
+
+        public static IEnumerable<T> WhereMax<T>(this IEnumerable<T> source, Func<T, int> selector) {
+            int max = 0;
+            var matches = new List<T>();
+            foreach (var item in source) {
+                var count = selector(item);
+                if (count > max) {
+                    max = count;
+                    matches = new List<T>();
+                }
+                if (count == max) matches.Add(item);
+            }
+            return matches;
+        }
     }
 }

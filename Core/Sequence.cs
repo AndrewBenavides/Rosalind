@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Rosalind.Core {
     public class Sequence : List<Nucleotide> {
         public double GcContent {
             get { return Sequence.GetGcContent(this); }
         }
-        
+
         public Dictionary<Nucleotide, int> NucleotideCounts {
             get { return Sequence.GetNucleotideCounts(this); }
         }
@@ -39,15 +37,7 @@ namespace Rosalind.Core {
         }
 
         public static List<int> FindMotif(Sequence source, Sequence search) {
-            var locations = new List<int>();
-            var start = search.Count - 1;
-            var frame = new LinkedList<Nucleotide>(source.Take(start));
-            for (int i = start; i < source.Count; i++) {
-                frame.AddLast(source[i]);
-                if (search.SequenceEqual(frame)) locations.Add((i - start) + 1); //One-based index.
-                frame.RemoveFirst();
-            }
-            return locations;
+            return MotifFinder.FindMotifIndexes(source, search);
         }
 
         public string FindMotif(Sequence search) {
@@ -73,7 +63,7 @@ namespace Rosalind.Core {
                 .Select(n => n.Complement)
                 .Reverse());
         }
-        
+
         public static Sequence Parse(string sequence) {
             return new Sequence(sequence
                 .Select(c => Nucleotide.Registry[c]));

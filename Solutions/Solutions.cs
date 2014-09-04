@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Rosalind.Core;
 using Rosalind.Core.Graphing;
 using Rosalind.Core.Math;
@@ -23,7 +22,7 @@ namespace Rosalind.Solutions {
             var error = (System.Math.Abs(fst - snd) / fst);
             return error <= maxRelativeError;
         }
-        
+
         [Fact]
         public void DNA() {
             DataService.SolveUsing(DNA_Solve);
@@ -35,7 +34,7 @@ namespace Rosalind.Solutions {
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
         }
-        
+
         [Fact]
         public void RNA() {
             DataService.SolveUsing(RNA_Solve);
@@ -113,7 +112,7 @@ namespace Rosalind.Solutions {
             var input = entry.ReadDataset();
 
             var factors = FactorGenerator.Population(input);
-            var probability = FactorProbability.GetByEnumeration(factors, 
+            var probability = FactorProbability.GetByEnumeration(factors,
                 f => f.Zygosity == Zygosity.HomozygousDominant || f.Zygosity == Zygosity.Heterozygous);
             var result = string.Format("{0:N5}", probability);
 
@@ -200,14 +199,14 @@ namespace Rosalind.Solutions {
             DataService.SolveUsing(IEV_Solve2);
         }
 
-        public void IEV_Solve(DataEntry entry) {
+        private void IEV_Solve(DataEntry entry) {
             var inputs = entry.ReadDataset().ToList<int>(' ');
             var result = FactorProbability.CalculateExpectedOffspringWithDominantTrait(inputs, 2).ToString("F1");
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
         }
 
-        public void IEV_Solve2(DataEntry entry) {
+        private void IEV_Solve2(DataEntry entry) {
             var inputs = entry.ReadDataset().ToList<int>(' ');
             var offspring = FactorProbability.CalculateExpectedOffsrping(inputs, 2);
             var result = (offspring[Zygosity.HomozygousDominant] + offspring[Zygosity.Heterozygous]).ToString("F1");
@@ -218,24 +217,20 @@ namespace Rosalind.Solutions {
 
         [Fact]
         public void LCSM() {
-            var strings = new string[] {
-                "GATTACA",
-                "TAGACCA",
-                "ATACA"
-            };
-            var sets = new List<HashSet<string>>();
-            foreach (var s in strings) {
-                var set = new HashSet<string>();
-                for (int i = s.Length; i >= 2; i--) {
-                    for (int j = 0; j <= s.Length - i; j++) {
-                        var sub = s.Substring(j, i);
-                        if (!set.Contains(sub)) set.Add(sub);
-                    }
-                }
-                sets.Add(set);
-            }
-            foreach (var entry in sets.Skip(1)) sets[0].IntersectWith(entry);
-            var common = sets[0].ToList();
+            DataService.SolveUsing(LCSM_Solve);
+        }
+
+        private void LCSM_Solve(DataEntry entry) {
+            var database = Database.Parse(entry.ReadDataset());
+            var common = MotifFinder.FindLongestCommonSubsequences(database.Values
+                .Select(s => s.Sequence));
+            var longest = common
+                .WhereMax()
+                .OrderBy(s => s.ToString())
+                .First()
+                .ToString();
+            var expected = entry.ReadOrWriteOutput(longest);
+            Assert.Equal(expected, longest);
         }
     }
 }
