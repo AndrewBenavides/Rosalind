@@ -5,7 +5,7 @@ using System.Linq;
 namespace Rosalind.Core {
     public class Sequence : List<Nucleotide>, IEqualityComparer<Sequence> {
         private int hashcode = 19;
-        
+
         public double GcContent {
             get { return Sequence.GetGcContent(this); }
         }

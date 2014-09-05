@@ -42,5 +42,37 @@ namespace Rosalind.Core {
             }
             return matches;
         }
+
+        public static bool ContainsSequence<T>(this IEnumerable<T> source, IEnumerable<T> subsequence) {
+            var sourceCount = source.LongCount();
+            var subCount = subsequence.LongCount();
+            if (subCount > sourceCount) return false;
+
+            var sourceEnum = source.GetEnumerator();
+            var subEnum = subsequence.GetEnumerator();
+            var index = 0;
+            var subIndex = 0;
+            while (index < sourceCount) {
+                subEnum.MoveNext();
+                do {
+                    sourceEnum.MoveNext();
+                    index++;
+                } while (index < sourceCount && !subEnum.Current.Equals(sourceEnum.Current));
+                while (subIndex < subCount && subEnum.Current.Equals(sourceEnum.Current)) {
+                    subIndex++;
+                    subEnum.MoveNext();
+                    sourceEnum.MoveNext();
+                }
+                if (subIndex == subCount) {
+                    return true;
+                } else {
+                    sourceEnum.Reset();
+                    for (int i = 0; i < index; i++) sourceEnum.MoveNext();
+                    subEnum.Reset();
+                    subIndex = 0;
+                }
+            }
+            return false;
+        }
     }
 }

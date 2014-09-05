@@ -12,10 +12,11 @@ namespace Rosalind.Core {
         }
 
         private static List<Sequence> FindCommonSubsequences(IEnumerable<Sequence> sequences) {
-            var first = new HashSet<Sequence>(ExplodeSequence(sequences.First()));
+            var first = ExplodeSequence(sequences.First()).ToList();
             foreach (var sequence in sequences.Skip(1)) {
-                var next = ExplodeSequence(sequence);
-                first.IntersectWith(next);
+                for (int i = first.Count - 1; i >= 0; i--) {
+                    if (!sequence.ContainsSequence(first[i])) first.RemoveAt(i);
+                }
             }
             return first.ToList();
         }
