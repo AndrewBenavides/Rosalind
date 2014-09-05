@@ -73,7 +73,9 @@
   <PropertyGroup>
     <PostBuildEvent>ROBOCOPY /COPY:DAT /DCOPY:T /E /PURGE /R:1 /W:1 "$(ProjectDir)Resources" "$(TargetDir)Resources"
 SET rce=%25ERRORLEVEL%25
-IF NOT %25rce%25==1 EXIT %25rce%25 ELSE EXIT 0</PostBuildEvent>
+IF %25rce%25==1 EXIT 0
+IF %25rce%25==2 EXIT 0
+EXIT %25rce%25</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

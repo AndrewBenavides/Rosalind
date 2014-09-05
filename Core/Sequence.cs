@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Rosalind.Core {
     public class Sequence : List<Nucleotide>, IEqualityComparer<Sequence> {
-        private int hashcode = 19;
+        private Lazy<int> hashcode;
 
         public double GcContent {
             get { return Sequence.GetGcContent(this); }
@@ -18,16 +18,8 @@ namespace Rosalind.Core {
             get { return Sequence.GetReverseComplement(this); }
         }
 
-        private Sequence(IEnumerable<Nucleotide> nucleotides) {
-            this.Capacity = nucleotides.Count();
-            using (var e = nucleotides.GetEnumerator()) {
-                for (int i = 0; i < this.Capacity; i++) {
-                    e.MoveNext();
-                    var nucleotide = e.Current;
-                    this.hashcode = this.hashcode * 31 + nucleotide.ID;
-                    Insert(i, nucleotide);
-                }
-            }
+        private Sequence(IEnumerable<Nucleotide> nucleotides) : base(nucleotides) {
+            this.hashcode = new Lazy<int>(() => GenerateHashCode());
         }
 
         public static int CalculateHammingDistance(Sequence a, Sequence b) {
@@ -73,7 +65,13 @@ namespace Rosalind.Core {
         }
 
         public override int GetHashCode() {
-            return this.hashcode;
+            return this.hashcode.Value;
+        }
+
+        private int GenerateHashCode() {
+            int hash = 19;
+            for (int i = 0; i < this.Count; i++) hash = hash * 31 + this[i].GetHashCode();
+            return hash;
         }
 
         public int GetHashCode(Sequence obj) {

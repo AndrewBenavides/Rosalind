@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Rosalind.Core {
     public static class LinqExtensions {
@@ -10,7 +9,7 @@ namespace Rosalind.Core {
             List<T> partition = new List<T>(size);
             foreach (var item in sequence) {
                 partition.Add(item);
-                if(partition.Count == size) {
+                if (partition.Count == size) {
                     yield return partition;
                     partition = new List<T>(size);
                 }
@@ -26,7 +25,7 @@ namespace Rosalind.Core {
 
         public static IEnumerable<T> WhereMax<T>(this IEnumerable<T> source)
             where T : IEnumerable<object> {
-                return source.WhereMax(x => x.Count());
+            return source.WhereMax(x => x.Count());
         }
 
         public static IEnumerable<T> WhereMax<T>(this IEnumerable<T> source, Func<T, int> selector) {
@@ -44,32 +43,19 @@ namespace Rosalind.Core {
         }
 
         public static bool ContainsSequence<T>(this IEnumerable<T> source, IEnumerable<T> subsequence) {
-            var sourceCount = source.LongCount();
-            var subCount = subsequence.LongCount();
-            if (subCount > sourceCount) return false;
+            var main = source as IList<T> ?? source.ToList();
+            var sub = subsequence as IList<T> ?? subsequence.ToList();
+            return main.ContainsSequence(sub);
+        }
 
-            var sourceEnum = source.GetEnumerator();
-            var subEnum = subsequence.GetEnumerator();
-            var index = 0;
-            var subIndex = 0;
-            while (index < sourceCount) {
-                subEnum.MoveNext();
-                do {
-                    sourceEnum.MoveNext();
-                    index++;
-                } while (index < sourceCount && !subEnum.Current.Equals(sourceEnum.Current));
-                while (subIndex < subCount && subEnum.Current.Equals(sourceEnum.Current)) {
-                    subIndex++;
-                    subEnum.MoveNext();
-                    sourceEnum.MoveNext();
-                }
-                if (subIndex == subCount) {
-                    return true;
-                } else {
-                    sourceEnum.Reset();
-                    for (int i = 0; i < index; i++) sourceEnum.MoveNext();
-                    subEnum.Reset();
-                    subIndex = 0;
+        public static bool ContainsSequence<T>(this IList<T> source, IList<T> subsequence) {
+            if (subsequence.Count > source.Count) return false;
+            var first = subsequence[0];
+            for (int i = 0; i < source.Count; i++) {
+                if (source[i].Equals(first)) {
+                    for (int j = 0, k = i; j < subsequence.Count && k < source.Count && source[k].Equals(subsequence[j]); j++, k++) {
+                        if (j == subsequence.Count - 1) return true;
+                    }
                 }
             }
             return false;
