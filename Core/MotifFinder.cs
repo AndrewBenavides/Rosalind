@@ -12,13 +12,13 @@ namespace Rosalind.Core {
         }
 
         private static List<Sequence> FindCommonSubsequences(IEnumerable<Sequence> sequences) {
-            var first = ExplodeSequence(sequences.First()).ToList();
-            foreach (var sequence in sequences.Skip(1)) {
-                for (int i = first.Count - 1; i >= 0; i--) {
-                    if (!sequence.ContainsSequence(first[i])) first.RemoveAt(i);
-                }
-            }
-            return first.ToList();
+            var remaining = sequences.Skip(1).ToList();
+            var common = ExplodeSequence(sequences.First())
+                .AsParallel()
+                .Where(sub => remaining.All(s => s.ContainsSequence(sub)))
+                .Distinct()
+                .ToList();
+            return common;
         }
 
         public static List<Sequence> FindLongestCommonSubsequences(IEnumerable<Sequence> sequences) {
