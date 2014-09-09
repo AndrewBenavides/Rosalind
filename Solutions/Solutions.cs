@@ -212,7 +212,6 @@ namespace Rosalind.Solutions {
             var result = (offspring[Zygosity.HomozygousDominant] + offspring[Zygosity.Heterozygous]).ToString("F1");
             var expected = entry.ReadOrWriteOutput(result);
             Assert.Equal(expected, result);
-
         }
 
         [Fact]
@@ -225,10 +224,9 @@ namespace Rosalind.Solutions {
             var common = MotifFinder.FindLongestCommonSubsequences(database.Values
                 .Select(s => s.Sequence));
             var longest = common
-                .WhereMax()
-                .OrderBy(s => s.ToString())
-                .First()
-                .ToString();
+                .Select(s => s.ToString())
+                .OrderBy(s => s)
+                .First();
             var expected = entry.ReadOrWriteOutput(longest);
             Assert.Equal(expected, longest);
         }

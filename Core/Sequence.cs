@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Rosalind.Core {
-    public class Sequence : List<Nucleotide>, IEqualityComparer<Sequence>, IComparer<Sequence>, IComparer<List<Nucleotide>>, IComparable<Sequence> {
+    public class Sequence : List<Nucleotide> {
         private Lazy<int> hashcode;
 
         public double GcContent {
@@ -18,8 +18,10 @@ namespace Rosalind.Core {
             get { return Sequence.GetReverseComplement(this); }
         }
 
-        private Sequence(IEnumerable<Nucleotide> nucleotides) : base(nucleotides) {
-            this.hashcode = new Lazy<int>(() => GenerateHashCode());
+        private Sequence(IEnumerable<Nucleotide> nucleotides)
+            : base(nucleotides) {
+            this.hashcode = new Lazy<int>(() => 
+                EnumerableEqualityComparer<Nucleotide>.Default.GetHashCode(this));
         }
 
         public static int CalculateHammingDistance(Sequence a, Sequence b) {
@@ -64,12 +66,6 @@ namespace Rosalind.Core {
             return this.hashcode.Value;
         }
 
-        private int GenerateHashCode() {
-            int hash = 19;
-            for (int i = 0; i < this.Count; i++) hash = hash * 31 + this[i].GetHashCode();
-            return hash;
-        }
-
         public static Dictionary<Nucleotide, int> GetNucleotideCounts(Sequence sequence) {
             return sequence
                 .GroupBy(n => n.Symbol)
@@ -98,39 +94,5 @@ namespace Rosalind.Core {
         public override string ToString() {
             return this.Select(n => n.Symbol).Concatenate();
         }
-
-        #region IComparable<T> Implementation
-        public int CompareTo(Sequence other) {
-            return Compare(this, other);
-        }
-        #endregion
-        
-        #region IComparer<T> Implementation
-        public int Compare(Sequence x, Sequence y) {
-            var a = x as List<Nucleotide>;
-            var b = y as List<Nucleotide>;
-            return Compare(a, b);
-        }
-
-        public int Compare(List<Nucleotide> x, List<Nucleotide> y) {
-            for (int i = 0, j = 0; i < x.Count && j < y.Count; i++, j++) {
-                if (x[i].Symbol != y[j].Symbol) {
-                    return x[i].Symbol > y[j].Symbol ? 1 : -1;
-                }
-            }
-            if (x.Count == y.Count) return 0;
-            return x.Count > y.Count ? 1 : -1;
-        }
-        #endregion
-
-        #region IEqualityComparer<T> Implementation
-        public bool Equals(Sequence x, Sequence y) {
-            return x.SequenceEqual(y);
-        }
-        
-        public int GetHashCode(Sequence obj) {
-            return obj.GetHashCode();
-        }
-        #endregion
     }
 }

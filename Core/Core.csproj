@@ -70,7 +70,8 @@
     <Compile Include="PunnettSquare.cs" />
     <Compile Include="RnaString.cs" />
     <Compile Include="Sequence.cs" />
-    <Compile Include="SequenceEqualityComparer.cs" />
+    <Compile Include="EnumerableEqualityComparer.cs" />
+    <Compile Include="SequenceComparer.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Utilities\JsonLoader.cs" />
   </ItemGroup>
