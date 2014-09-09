@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Rosalind.Core {
-    public class Sequence : List<Nucleotide>, IEqualityComparer<Sequence> {
+    public class Sequence : List<Nucleotide>, IEqualityComparer<Sequence>, IComparer<Sequence>, IComparer<List<Nucleotide>>, IComparable<Sequence> {
         private Lazy<int> hashcode;
 
         public double GcContent {
@@ -45,10 +45,6 @@ namespace Rosalind.Core {
             return false;
         }
 
-        public bool Equals(Sequence x, Sequence y) {
-            return x.SequenceEqual(y);
-        }
-
         public static List<int> FindMotif(Sequence source, Sequence search) {
             return MotifFinder.FindMotifIndexes(source, search);
         }
@@ -72,10 +68,6 @@ namespace Rosalind.Core {
             int hash = 19;
             for (int i = 0; i < this.Count; i++) hash = hash * 31 + this[i].GetHashCode();
             return hash;
-        }
-
-        public int GetHashCode(Sequence obj) {
-            return obj.GetHashCode();
         }
 
         public static Dictionary<Nucleotide, int> GetNucleotideCounts(Sequence sequence) {
@@ -106,5 +98,39 @@ namespace Rosalind.Core {
         public override string ToString() {
             return this.Select(n => n.Symbol).Concatenate();
         }
+
+        #region IComparable<T> Implementation
+        public int CompareTo(Sequence other) {
+            return Compare(this, other);
+        }
+        #endregion
+        
+        #region IComparer<T> Implementation
+        public int Compare(Sequence x, Sequence y) {
+            var a = x as List<Nucleotide>;
+            var b = y as List<Nucleotide>;
+            return Compare(a, b);
+        }
+
+        public int Compare(List<Nucleotide> x, List<Nucleotide> y) {
+            for (int i = 0, j = 0; i < x.Count && j < y.Count; i++, j++) {
+                if (x[i].Symbol != y[j].Symbol) {
+                    return x[i].Symbol > y[j].Symbol ? 1 : -1;
+                }
+            }
+            if (x.Count == y.Count) return 0;
+            return x.Count > y.Count ? 1 : -1;
+        }
+        #endregion
+
+        #region IEqualityComparer<T> Implementation
+        public bool Equals(Sequence x, Sequence y) {
+            return x.SequenceEqual(y);
+        }
+        
+        public int GetHashCode(Sequence obj) {
+            return obj.GetHashCode();
+        }
+        #endregion
     }
 }

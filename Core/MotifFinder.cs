@@ -4,7 +4,7 @@ using System.Linq;
 namespace Rosalind.Core {
     public static class MotifFinder {
         #region SuffixArray
-        public static List<string> GenerateSuffixArray(Sequence sequence) {
+        private static List<string> GenerateSuffixArray(Sequence sequence) {
             var seq = sequence.ToString();
             var suffix = new SortedSet<string>(GetSuffixes(seq));
             return suffix.ToList();
@@ -37,18 +37,71 @@ namespace Rosalind.Core {
                 .Where(sub => remaining.All(s => Contains(s, sub)))
                 .Select(s => Sequence.Parse(s))
                 .ToList();
-            return common; ;
+            return common;
         }
-        #endregion
 
-        #region Reduce
         private static bool Contains(List<string> suffix, string value) {
             var result = suffix.BinarySearch(value);
             if (result >= 0) return true;
             if (~result >= suffix.Count) return false;
             return suffix[~result].Contains(value);
         }
+        #endregion
 
+        #region Suffix Array Sequence
+        private static List<List<Nucleotide>> GenerateSuffixArray2(Sequence sequence) {
+            var length = sequence.Count;
+            return Enumerable.Range(0, length)
+                .Select(i => sequence.GetRange(i, length - i))
+                .OrderBy(s => s, sequence)
+                .ToList();
+        }
+
+        private static IComparer<List<Nucleotide>> comparer = Sequence.Parse("A");
+
+        private static bool Contains(List<List<Nucleotide>> suffixes, List<Nucleotide> value) {
+            var result = suffixes.BinarySearch(value, comparer);
+            if (result >= 0) return true;
+            if (~result >= suffixes.Count) return false;
+            return suffixes[~result].ContainsSequence(value);
+        }
+
+        private static IEnumerable<List<Nucleotide>> Explode(Sequence sequence) {
+            var count = sequence.Count;
+            for (int i = 2; i <= count; i++) {
+                for (int j = 0; j <= count - i; j++) {
+                    var a = sequence.GetRange(j, i);
+                    yield return a;
+                }
+            }
+        }
+
+        public static List<Sequence> FindMotifs2(IEnumerable<Sequence> sequences) {
+            var remaining = sequences.Skip(1)
+                .Select(s => GenerateSuffixArray2(s))
+                .ToList();
+            var combos = Explode(sequences.First())
+                .GroupBy(s => s.Count);
+            var common = combos
+                .TakeWhile(group => group
+                    .Any(sub => remaining
+                        .All(r => Contains(r, sub))))
+                .Last()
+                .Where(sub => remaining.All(r => Contains(r, sub)))
+                .Select(sub => Sequence.Create(sub))
+                .ToList();
+
+            //var common = Explode(sequences.First())
+            //    .AsParallel()
+            //    .Where(sub => remaining.All(s => Contains(s, sub)))
+            //    .Select(s => Sequence.Create(s))
+            //    .Distinct()
+            //    .ToList();
+            return common;
+        }
+        #endregion
+
+        #region Reduce
         private static IEnumerable<string> CommonSubStr(IList<string> strings, int frameLength) {
             var first = strings[0];
             var range = first.Length - frameLength + 1;
@@ -73,6 +126,35 @@ namespace Rosalind.Core {
                 mid = (min + max) / 2;
             } while (min + 1 < max);
             return CommonSubStr(sorted, mid).ToList();
+        }
+        #endregion
+
+        #region Reduce Sequence
+        private static IEnumerable<List<Nucleotide>> CommonSubsequence(IList<Sequence> sequences, int frameLength) {
+            var first = sequences[0];
+            var range = first.Count - frameLength + 1;
+            for (int i = 0; i < range; i++) {
+                var sub = first.GetRange(i, frameLength);
+                if (sequences.Skip(1).All(s => s.ContainsSequence(sub))) yield return sub;
+            }
+        }
+
+        public static List<Sequence> FindLongestCommonSubsequences2(IEnumerable<Sequence> sequences) {
+            var sorted = sequences.OrderByDescending(s => s.Count).ToList();
+            var min = 0;
+            var max = sorted[0].Count;
+            var mid = max;
+            do {
+                if (CommonSubsequence(sorted, mid).Any()) {
+                    min = mid;
+                } else {
+                    max = mid;
+                }
+                mid = (min + max) / 2;
+            } while (min + 1 < max);
+            return CommonSubsequence(sorted, mid)
+                .Select(s => Sequence.Create(s))
+                .ToList();
         }
         #endregion
 
