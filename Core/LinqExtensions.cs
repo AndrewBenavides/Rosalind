@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Rosalind.Core.Utilities;
 
 namespace Rosalind.Core {
     public static class LinqExtensions {
@@ -42,11 +43,11 @@ namespace Rosalind.Core {
             return matches;
         }
 
-        public static bool ContainsSequence<T>(this IEnumerable<T> source, IEnumerable<T> subsequence) {
-            var main = source as IList<T> ?? source.ToList();
-            var sub = subsequence as IList<T> ?? subsequence.ToList();
-            return main.ContainsSequence(sub);
-        }
+        //public static bool ContainsSequence<T>(this IEnumerable<T> source, IEnumerable<T> subsequence) {
+        //    var main = source as IList<T> ?? source.ToList();
+        //    var sub = subsequence as IList<T> ?? subsequence.ToList();
+        //    return main.ContainsSequence(sub);
+        //}
 
         public static bool ContainsSequence<T>(this IList<T> source, IList<T> subsequence) {
             if (subsequence.Count > source.Count) return false;
@@ -59,6 +60,35 @@ namespace Rosalind.Core {
                 }
             }
             return false;
+        }
+
+        public static bool ContainsSequence<T>(this IEnumerable<T> source, IEnumerable<T> subsequence) {
+            var count = subsequence.Count();
+            var xEnumerator = source.GetEnumerator().AsReversible(count);
+            var yEnumerator = subsequence.GetEnumerator().AsReversible(count);
+            yEnumerator.MoveNext();
+            var windback = 0;
+            while (xEnumerator.MoveNext()) {
+                while (xEnumerator.Current.Equals(yEnumerator.Current)) {
+                    if (!yEnumerator.MoveNext()) return true;
+                    if (!xEnumerator.MoveNext()) return false;
+                    windback++;
+                }
+                if (windback > 0) {
+                    xEnumerator.MovePrevious(windback);
+                    yEnumerator.MovePrevious(windback);
+                    windback = 0;
+                }
+            }
+            return false;
+        }
+
+        public static IReversibleEnumerator<T> AsReversible<T>(this IEnumerator<T> enumerator) {
+            return new ReversibleEnumerator<T>(enumerator);
+        }
+
+        public static IReversibleEnumerator<T> AsReversible<T>(this IEnumerator<T> enumerator, int bufferCapacity) {
+            return new ReversibleEnumerator<T>(enumerator, bufferCapacity);
         }
     }
 }

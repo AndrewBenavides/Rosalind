@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataService.cs" />
+    <Compile Include="DictionaryTests.cs" />
     <Compile Include="LinqExtensionsTests.cs" />
     <Compile Include="Math\CombinationsTests.cs" />
     <Compile Include="Math\FactorialTests.cs" />
